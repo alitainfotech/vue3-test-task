@@ -186,19 +186,21 @@
           </a>
         </div>
         <div class="hidden md:-mt-px md:flex">
-          <!-- <a
-            v-if="calls.data && calls.data.length"
-            v-for="(page, index) in Math.ceil(calls.total / calls.per_page)"
-            :key="index"
-            @click="callsStore.get_calls(index + 1)"
-            href="#"
-            :class="[
-              calls.current_page === index + 1
-                ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
-                : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
-            ]"
-            >{{ index + 1 }}</a
-          > -->
+          <div v-if="calls.data && calls.data.length">
+            <a
+              v-for="(page, index) in Math.ceil(calls.total / calls.per_page)"
+              :key="index"
+              @click="getNextData(index + 1)"
+              href="#"
+              :class="[
+                calls.current_page === index + 1
+                  ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
+                  : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              ]"
+              >{{ index + 1 }}</a
+            >
+          </div>
+
           <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500
           hover:text-gray-700 hover:border-gray-300" -->
           <!--
@@ -237,7 +239,7 @@
         <div class="-mt-px flex w-0 flex-1 justify-end">
           <a
             v-if="calls.current_page < Math.ceil(calls.total / calls.per_page)"
-            @click="callsStore.get_calls(calls.current_page + 1)"
+            @click="getNextData(calls.current_page + 1)"
             href="#"
             class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
           >
@@ -252,14 +254,33 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { useCallsStore } from '../../stores/CallsStore'
 const callsStore = useCallsStore()
 const { loading, calls } = storeToRefs(callsStore)
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid'
-
+const searchQuery = ref('')
+const tableData = ref([])
 onMounted(() => {
-  callsStore.get_calls(1)
+  getNextData(1)
   // v-for="(page, index) in Math.ceil(calls.total / calls.per_page)"
 })
+const callList = computed(() => {
+  if (tableData) {
+    return tableData.value?.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+  }
+  return tableData
+})
+watch(
+  calls,
+  (newValue, oldValue) => {
+    tableData.value = newValue.data
+  },
+  { immediate: true }
+)
+function getNextData(pageIndex) {
+  callsStore.get_calls(1)
+}
 </script>

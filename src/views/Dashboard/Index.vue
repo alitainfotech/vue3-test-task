@@ -211,6 +211,7 @@
               placeholder="Search..."
               type="search"
               name="search"
+              v-model="searchQuery"
             />
           </form>
           <div class="flex items-center gap-x-4 lg:gap-x-6">
@@ -331,7 +332,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import { useAuthenticationStore } from '../../stores/Authentication'
-
+const searchQuery = ref('')
 const navigation = [
   { name: 'Dashboard', href: '/', icon: HomeIcon, current: false },
   { name: 'Calls', href: '/calls', icon: PhoneIcon, current: false }
