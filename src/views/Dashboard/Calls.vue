@@ -76,9 +76,9 @@
                 </th>
                 <th
                   scope="col"
-                  class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-3 pr-4 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
+                  class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
                 >
-                  <span class="sr-only">Edit</span>
+                  action
                 </th>
               </tr>
             </thead>
@@ -165,6 +165,17 @@
                   <a href="#" class="text-indigo-600 hover:text-indigo-900"
                     >Edit<span class="sr-only">, {{ call?.call_id }}</span></a
                   >
+                  |
+                  <a
+                    href="#"
+                    class="text-red-600 hover:text-red-900"
+                    @click="
+                      (e) => {
+                        handleDeleteAction(e, call?.call_id)
+                      }
+                    "
+                    >Delete<span class="sr-only">, {{ call?.call_id }}</span></a
+                  >
                 </td>
               </tr>
             </tbody>
@@ -177,7 +188,11 @@
         <div class="-mt-px flex w-0 flex-1">
           <a
             v-if="currentPage != 1"
-            @click="handlePageNoClick((currentPage = currentPage - 1))"
+            @click="
+              (e) => {
+                handlePageNoClick(e, (currentPage = currentPage - 1))
+              }
+            "
             href="#"
             class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
           >
@@ -203,7 +218,11 @@
           <div v-if="callList && callList.length">
             <a
               v-if="currentPage > 3"
-              @click="handlePageNoClick(pages[0])"
+              @click="
+                (e) => {
+                  handlePageNoClick(e, pages[0])
+                }
+              "
               href="#"
               :class="[
                 currentPage === pages[0]
@@ -216,7 +235,11 @@
             <a
               v-for="(pageNo, index) in displayedPages"
               :key="index"
-              @click="handlePageNoClick(pageNo)"
+              @click="
+                (e) => {
+                  handlePageNoClick(e, pageNo)
+                }
+              "
               href="#"
               :class="[
                 currentPage === pageNo
@@ -228,7 +251,11 @@
             <a v-if="currentPage < pages.length - 2">....</a>
             <a
               v-if="currentPage < pages.length - 2"
-              @click="handlePageNoClick(pages.length)"
+              @click="
+                (e) => {
+                  handlePageNoClick(e, pages.length)
+                }
+              "
               href="#"
               :class="[
                 currentPage === pageNo
@@ -276,7 +303,11 @@
         <div class="-mt-px flex w-0 flex-1 justify-end">
           <a
             v-if="currentPage < Math.ceil(total / perPage)"
-            @click="handlePageNoClick((currentPage = currentPage + 1))"
+            @click="
+              (e) => {
+                handlePageNoClick(e, (currentPage = currentPage + 1))
+              }
+            "
             href="#"
             class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
           >
@@ -299,7 +330,7 @@ import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid'
 
 const searchQuery = ref('')
 const tableData = ref([])
-const props = defineProps(['searchKey'])
+const props = defineProps(['searchKey', 'handleDeleteAction'])
 const pages = ref([])
 const currentPage = ref(1)
 const perPage = ref(20)
@@ -323,24 +354,15 @@ const callList = computed(() => {
   return tableData
 })
 const displayedPages = computed(() => {
-  // if currentPage is page 1
   if (currentPage.value === 1) {
     return pages.value.slice(currentPage.value - 1, currentPage.value + 4)
-  }
-  // if currentPage is the last page
-  else if (currentPage.value === pages.value.length) {
+  } else if (currentPage.value === pages.value.length) {
     return pages.value.slice(currentPage.value - 5, currentPage.value + 1)
-  }
-  // if currentPage is between 4-7
-  else if (currentPage.value >= 4 && currentPage.value <= 7) {
+  } else if (currentPage.value >= 4 && currentPage.value <= 7) {
     return pages.value.slice(currentPage.value - 2, currentPage.value + 1)
-  }
-  // if currentPage more than 7
-  else if (currentPage.value > 7) {
+  } else if (currentPage.value > 7) {
     return pages.value.slice(currentPage.value - 4, currentPage.value + 1)
-  }
-  // if currentPage less than 4
-  else {
+  } else {
     return pages.value.slice(currentPage.value - 2, currentPage.value + 3)
   }
 })
@@ -365,11 +387,16 @@ function setPages() {
     }
   }
 }
-function handlePageNoClick(pageNo) {
+function handlePageNoClick(e, pageNo) {
+  e.preventDefault()
   currentPage.value = pageNo
   getNextData(pageNo)
 }
 function getNextData(pageIndex) {
   callsStore.get_calls(pageIndex)
+}
+function handleDeleteAction(e, callId) {
+  e.preventDefault()
+  props.handleDeleteAction(callId)
 }
 </script>

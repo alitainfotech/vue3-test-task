@@ -295,19 +295,31 @@
         <div class="px-4 sm:px-6 lg:px-8">
           <!-- Your content -->
           <RouterView v-slot="{ Component }">
-            <component :is="Component" :searchKey="searchQuery" />
+            <component
+              :is="Component"
+              :searchKey="searchQuery"
+              :handleDeleteAction="handleCallDetaileDeleteAction"
+            />
           </RouterView>
         </div>
       </main>
     </div>
+    <ConfirmationDialog
+      v-if="isShowConfirmationDialog"
+      :callId="callId"
+      :cancelAction="handleCancelAction"
+      :deleteAction="handleDeleteAction"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, defineComponent } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 const authenticationStore = useAuthenticationStore()
+import ConfirmationDialog from '../../components/common/ConfirmationDialog.vue'
 import { storeToRefs } from 'pinia'
+// import  from '../../components/common/ConfirmationDialog.vue'
 const { user } = storeToRefs(authenticationStore)
 import {
   Dialog,
@@ -334,7 +346,10 @@ import {
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import { useAuthenticationStore } from '../../stores/Authentication'
+import ConfirmationDialogVue from '../../components/common/ConfirmationDialog.vue'
 const searchQuery = ref('')
+const isShowConfirmationDialog = ref(false)
+const callId = ref('')
 const navigation = [
   { name: 'Dashboard', href: '/', icon: HomeIcon, current: false },
   { name: 'Calls', href: '/calls', icon: PhoneIcon, current: false }
@@ -354,4 +369,14 @@ const userNavigation = [
 ]
 
 const sidebarOpen = ref(false)
+function handleCallDetaileDeleteAction(id) {
+  callId.value = id
+  isShowConfirmationDialog.value = true
+}
+function handleDeleteAction() {
+  isShowConfirmationDialog.value = false
+}
+function handleCancelAction() {
+  isShowConfirmationDialog.value = false
+}
 </script>
