@@ -65,3 +65,18 @@ For delete functionality I took following appraoch
 #### Note
 
 - Here we have assumed that data are important. So we are not deleting actual data by calling delete api.
+
+### Instructions for test
+
+#### Filter call list
+
+- Type any text in search box located in header. If text or part of text will be matche with any of the columns text than it will filtr that call detail
+
+#### Pagination
+
+- Increase or decrease limit parameter of get_calls function, located at store/CallsStore.js
+- It will always limit the display page number irrespective of number of pages
+
+#### delete functionality
+
+- Click on delete button located in action column. It will open confirmation dialog, where you can see call id to be deleted
