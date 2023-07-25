@@ -215,56 +215,56 @@
               >{{ index + 1 }}</a
             >
           </div> -->
-          <div v-if="callList && callList.length">
-            <a
-              v-if="currentPage > 3"
-              @click="
-                (e) => {
-                  handlePageNoClick(e, pages[0])
-                }
-              "
-              href="#"
-              :class="[
-                currentPage === pages[0]
-                  ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
-                  : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              ]"
-              >{{ pages[0] }}</a
-            >
-            <a v-if="currentPage > 3">....</a>
-            <a
-              v-for="(pageNo, index) in displayedPages"
-              :key="index"
-              @click="
-                (e) => {
-                  handlePageNoClick(e, pageNo)
-                }
-              "
-              href="#"
-              :class="[
-                currentPage === pageNo
-                  ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
-                  : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              ]"
-              >{{ pageNo }}</a
-            >
-            <a v-if="currentPage < pages.length - 2">....</a>
-            <a
-              v-if="currentPage < pages.length - 2"
-              @click="
-                (e) => {
-                  handlePageNoClick(e, pages.length)
-                }
-              "
-              href="#"
-              :class="[
-                currentPage === pageNo
-                  ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
-                  : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              ]"
-              >{{ pages[pages.length - 1] }}</a
-            >
-          </div>
+          <!-- <div v-if="callList && callList.length"> -->
+          <a
+            v-if="currentPage > 3"
+            @click="
+              (e) => {
+                handlePageNoClick(e, pages[0])
+              }
+            "
+            href="#"
+            :class="[
+              currentPage === pages[0]
+                ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
+                : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
+            ]"
+            >{{ pages[0] }}</a
+          >
+          <a v-if="currentPage > 3">....</a>
+          <a
+            v-for="(pageNo, index) in displayedPages"
+            :key="index"
+            @click="
+              (e) => {
+                handlePageNoClick(e, pageNo)
+              }
+            "
+            href="#"
+            :class="[
+              currentPage === pageNo
+                ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
+                : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
+            ]"
+            >{{ pageNo }}</a
+          >
+          <a v-if="currentPage < pages.length - 2">....</a>
+          <a
+            v-if="currentPage < pages.length - 2"
+            @click="
+              (e) => {
+                handlePageNoClick(e, pages.length)
+              }
+            "
+            href="#"
+            :class="[
+              currentPage === pageNo
+                ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
+                : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
+            ]"
+            >{{ pages[pages.length - 1] }}</a
+          >
+          <!-- </div> -->
           <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500
           hover:text-gray-700 hover:border-gray-300" -->
           <!--
