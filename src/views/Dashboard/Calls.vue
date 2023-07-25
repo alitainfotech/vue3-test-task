@@ -226,7 +226,7 @@
             href="#"
             :class="[
               currentPage === pages[0]
-                ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
+                ? 'inline-flex items-center border-t-2 bg-blue-300 border-indigo-500 px-4 pt-4 text-sm font-medium text-white'
                 : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
             ]"
             >{{ pages[0] }}</a
@@ -243,7 +243,7 @@
             href="#"
             :class="[
               currentPage === pageNo
-                ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
+                ? 'inline-flex items-center border-t-2 bg-blue-300 border-indigo-500 px-4 pt-4 text-sm font-medium text-white'
                 : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
             ]"
             >{{ pageNo }}</a
@@ -259,7 +259,7 @@
             href="#"
             :class="[
               currentPage === pageNo
-                ? 'inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600'
+                ? 'inline-flex items-center border-t-2 bg-blue-300 border-indigo-500 px-4 pt-4 text-sm font-medium text-white'
                 : 'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
             ]"
             >{{ pages[pages.length - 1] }}</a
