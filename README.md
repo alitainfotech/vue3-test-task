@@ -77,6 +77,6 @@ For delete functionality I took following appraoch
 - Increase or decrease limit parameter of get_calls function, located at store/CallsStore.js
 - It will always limit the display page number irrespective of number of pages
 
-#### delete functionality
+#### Delete functionality
 
 - Click on delete button located in action column. It will open confirmation dialog, where you can see call id to be deleted
