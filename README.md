@@ -57,8 +57,8 @@ For improve the pagination I took following appraoch
 For delete functionality I took following appraoch
 
 - Put delete button and bind click event for each call detail(row of calls)
-- Triggered handleDeleteAction delete button click and pass call_Id to this action
-- handleDeleteActi will show confirmatin dialog
+- Triggered handleDeleteAction on delete button click and pass call_Id to this action
+- handleDeleteAction will trigger confirmation dialog
 - Dialog contain message(also include call-id), cancel and delete buttons
 - Click on cancel or delete button it will close dialog
 
