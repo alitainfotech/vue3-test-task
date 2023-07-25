@@ -47,7 +47,7 @@ For Filters call list I took following appraoch
 
 For improve the pagination I took following appraoch
 
-- First calculated total no of pages possible with the help of total and per_page parametr got in call_list api
+- First calculated total no of pages possible with the help of total and per_page parametr received in call_list api
 - Created one array i.e pages that store page numbers
 - From currentPage's index and pages array, calculate page numbers to be displayed at that moment.
   Like wise It will display some page number followed by some dots followed by last page number and always limit the display page number at any time even if no of pages more than 10.
