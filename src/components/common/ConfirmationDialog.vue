@@ -15,7 +15,7 @@
       >
         <div class="flex items-center">
           <div class="h-10 w-16">
-            <img src="delete-stop-svgrepo-com.svg" alt="Heart Icon" />
+            <img src="/src/assets/delete-stop-svgrepo-com.svg" alt="Heart Icon" />
           </div>
 
           <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
