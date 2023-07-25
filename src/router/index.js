@@ -17,7 +17,8 @@ const router = createRouter({
         {
           path: '/calls',
           name: 'Calls',
-          component: () => import('../views/Dashboard/Calls.vue')
+          component: () => import('../views/Dashboard/Calls.vue'),
+          props: true
         }
       ]
     },

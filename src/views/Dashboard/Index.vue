@@ -294,7 +294,9 @@
       <main class="py-10">
         <div class="px-4 sm:px-6 lg:px-8">
           <!-- Your content -->
-          <RouterView />
+          <RouterView v-slot="{ Component }">
+            <component :is="Component" :searchKey="searchQuery" />
+          </RouterView>
         </div>
       </main>
     </div>

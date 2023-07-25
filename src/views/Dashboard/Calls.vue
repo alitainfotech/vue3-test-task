@@ -83,87 +83,87 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(call, index) in calls.data" :key="call.call_id">
+              <tr v-for="(call, index) in callList" :key="call?.call_id">
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8'
                   ]"
                 >
-                  {{ call.call_id }}
+                  {{ call?.call_id }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell'
                   ]"
                 >
-                  {{ call.application_id }}
+                  {{ call?.application_id }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell'
                   ]"
                 >
-                  {{ call.from }}
+                  {{ call?.from }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell'
                   ]"
                 >
-                  {{ call.to }}
+                  {{ call?.to }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell'
                   ]"
                 >
-                  {{ call.answer_at }}
+                  {{ call?.answer_at }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell'
                   ]"
                 >
-                  {{ call.hangup_at }}
+                  {{ call?.hangup_at }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell'
                   ]"
                 >
-                  {{ call.duration }}
+                  {{ call?.duration }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell'
                   ]"
                 >
-                  {{ call.cost }}
+                  {{ call?.cost }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell'
                   ]"
                 >
-                  {{ call.status }}
+                  {{ call?.status }}
                 </td>
                 <td
                   :class="[
-                    index !== calls.data.length - 1 ? 'border-b border-gray-200' : '',
+                    index !== callList.length - 1 ? 'border-b border-gray-200' : '',
                     'relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-8 lg:pr-8'
                   ]"
                 >
                   <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                    >Edit<span class="sr-only">, {{ call.call_id }}</span></a
+                    >Edit<span class="sr-only">, {{ call?.call_id }}</span></a
                   >
                 </td>
               </tr>
@@ -261,15 +261,22 @@ const { loading, calls } = storeToRefs(callsStore)
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid'
 const searchQuery = ref('')
 const tableData = ref([])
+const props = defineProps(['searchKey'])
 onMounted(() => {
   getNextData(1)
+
   // v-for="(page, index) in Math.ceil(calls.total / calls.per_page)"
 })
 const callList = computed(() => {
-  if (tableData) {
-    return tableData.value?.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
+  if (tableData.value?.length) {
+    return tableData.value?.filter((callDetail) => {
+      if (!props.searchKey) {
+        return callDetail
+      }
+      return Object.keys(callDetail).some((key) => {
+        return String(callDetail[key]).toLowerCase().indexOf(props.searchKey) > -1
+      })
+    })
   }
   return tableData
 })
