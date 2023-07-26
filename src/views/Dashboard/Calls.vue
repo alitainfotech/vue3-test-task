@@ -554,6 +554,8 @@ function getNextData() {
 }
 function clearFIlters(e) {
   e.preventDefault()
+  currentPage.value = 1
+  perPage.value = 20
   callFrom.value = ''
   callTo.value = ''
   dateFrom.value = ''
