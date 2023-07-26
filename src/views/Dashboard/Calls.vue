@@ -384,7 +384,9 @@ watch(
   { immediate: true }
 )
 watch(deleteStatus, (newVal, oldval) => {
-  getNextData(currentPage.value)
+  if (newVal) {
+    getNextData(currentPage.value)
+  }
 })
 function setPages() {
   if (total.value) {

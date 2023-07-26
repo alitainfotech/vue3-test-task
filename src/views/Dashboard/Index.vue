@@ -347,6 +347,8 @@ import {
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import { useAuthenticationStore } from '../../stores/Authentication'
 import ConfirmationDialogVue from '../../components/common/ConfirmationDialog.vue'
+import { useCallsStore } from '../../stores/CallsStore'
+const callsStore = useCallsStore()
 const searchQuery = ref('')
 const isShowConfirmationDialog = ref(false)
 const callId = ref('')
@@ -374,6 +376,7 @@ function handleCallDetaileDeleteAction(id) {
   isShowConfirmationDialog.value = true
 }
 function handleDeleteAction() {
+  callsStore.delete_calls(callId.value)
   isShowConfirmationDialog.value = false
 }
 function handleCancelAction() {

@@ -10,6 +10,7 @@ const { token, flashMessage } = storeToRefs(authenticationStore)
 
 export const useCallsStore = defineStore('calls', () => {
   const calls = ref({})
+  const deleteStatus = ref(false)
   const loading = ref(false)
 
   function get_calls(page = 1, limit = 20) {
@@ -39,8 +40,38 @@ export const useCallsStore = defineStore('calls', () => {
       })
       .finally(() => {
         loading.value = false
+        deleteStatus.value = false
       })
   }
-
-  return { calls, loading, get_calls }
+  function delete_calls(callId) {
+    loading.value = true
+    console.log(callId, '...delete_calls')
+    axiosInstance
+      .delete(`/api/call/${callId}`, {
+        headers: {
+          Authorization: 'Bearer ' + token.value
+        }
+      })
+      .then((res) => {
+        deleteStatus.value = true
+      })
+      .catch((error) => {
+        console.log(error)
+        if (error.response.status === 401) {
+          authenticationStore.logout
+        }
+        if (error.response && error.response.status == 404) {
+          router.push({
+            name: '404Resource',
+            params: { resource: 'calls' }
+          })
+        } else {
+          router.push({ name: 'NetworkError' })
+        }
+      })
+      .finally(() => {
+        loading.value = false
+      })
+  }
+  return { calls, deleteStatus, loading, get_calls, delete_calls }
 })
