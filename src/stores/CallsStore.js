@@ -13,10 +13,40 @@ export const useCallsStore = defineStore('calls', () => {
   const deleteStatus = ref(false)
   const loading = ref(false)
 
-  function get_calls(page = 1, limit = 20) {
+  // function get_calls(page = 1, limit = 20) {
+  //   loading.value = true
+  //   axiosInstance
+  //     .get('/api/call?page=' + page + '&limit=' + limit, {
+  //       headers: {
+  //         Authorization: 'Bearer ' + token.value
+  //       }
+  //     })
+  //     .then((res) => {
+  //       calls.value = res.data
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //       if (error.response.status === 401) {
+  //         authenticationStore.logout
+  //       }
+  //       if (error.response && error.response.status == 404) {
+  //         router.push({
+  //           name: '404Resource',
+  //           params: { resource: 'calls' }
+  //         })
+  //       } else {
+  //         router.push({ name: 'NetworkError' })
+  //       }
+  //     })
+  //     .finally(() => {
+  //       loading.value = false
+  //       deleteStatus.value = false
+  //     })
+  // }
+  function get_calls(params) {
     loading.value = true
     axiosInstance
-      .get('/api/call?page=' + page + '&limit=' + limit, {
+      .get(`/api/call?${params}`, {
         headers: {
           Authorization: 'Bearer ' + token.value
         }
@@ -45,7 +75,6 @@ export const useCallsStore = defineStore('calls', () => {
   }
   function delete_calls(callId) {
     loading.value = true
-    console.log(callId, '...delete_calls')
     axiosInstance
       .delete(`/api/call/${callId}`, {
         headers: {

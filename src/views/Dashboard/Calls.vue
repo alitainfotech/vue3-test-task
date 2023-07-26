@@ -14,6 +14,102 @@
         </button>
       </div> -->
     </div>
+    <div>
+      <form action="" class="flex items-center justify-center gap-2">
+        <div class="w-full">
+          <label for="pageNo" class="block mb-2 font-bold text-gray-600">Page No.</label>
+          <input
+            type="number"
+            id="pageNo"
+            name="pageNo"
+            placeholder="page no"
+            class="border border-gray-300 shadow p-3 w-full rounded"
+            v-model="currentPage"
+            @blur="getNextData"
+          />
+        </div>
+        <div class="w-full">
+          <label for="limit" class="block mb-2 font-bold text-gray-600">limit</label>
+          <input
+            type="number"
+            id="limit"
+            name="limit"
+            placeholder="limit"
+            class="border border-gray-300 shadow p-3 w-full rounded"
+            v-model="perPage"
+            @blur="getNextData"
+          />
+        </div>
+        <div class="w-full">
+          <label for="callFrom" class="block mb-2 font-bold text-gray-600">From</label>
+          <input
+            type="text"
+            id="callFrom"
+            name="callFrom"
+            placeholder="Call from"
+            class="border border-gray-300 shadow p-3 w-full rounded"
+            v-model="callFrom"
+            @blur="getNextData"
+          />
+        </div>
+        <div class="w-full">
+          <label for="callTo" class="block mb-2 font-bold text-gray-600">To</label>
+          <input
+            type="text"
+            id="callTo"
+            name="callTo"
+            placeholder="Call to"
+            class="border border-gray-300 shadow p-3 w-full rounded"
+            v-model="callTo"
+            @blur="getNextData"
+          />
+        </div>
+        <div class="w-full">
+          <label for="callId" class="block mb-2 font-bold text-gray-600">CallId</label>
+          <input
+            type="text"
+            id="callId"
+            name="callId"
+            placeholder="Call id"
+            class="border border-gray-300 shadow p-3 w-full rounded"
+            v-model="callId"
+            @blur="getNextData"
+          />
+        </div>
+        <div class="w-full">
+          <label for="dateFrom" class="block mb-2 font-bold text-gray-600">Date from</label>
+          <input
+            type="text"
+            id="dateFrom"
+            name="dateFrom"
+            placeholder="Date from"
+            class="border border-gray-300 shadow p-3 w-full rounded"
+            v-model="dateFrom"
+            @blur="getNextData"
+          />
+        </div>
+        <div class="w-full">
+          <label for="dateTo" class="block mb-2 font-bold text-gray-600">Date to</label>
+          <input
+            type="text"
+            id="dateTo"
+            name="dateTo"
+            placeholder="Date to"
+            class="border border-gray-300 shadow p-3 w-full rounded"
+            v-model="dateTo"
+            @blur="getNextData"
+          />
+        </div>
+        <div class="w-full">
+          <button
+            class="bg-blue-500 text-white font-bold rounded-lg w-full h-12 mt-8"
+            @click="clearFIlters"
+          >
+            clear
+          </button>
+        </div>
+      </form>
+    </div>
     <div class="mt-8 flow-root">
       <div class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle">
@@ -341,8 +437,14 @@ const pages = ref([])
 const currentPage = ref(1)
 const perPage = ref(20)
 const total = ref(0)
+//const limitRow = ref(20)
+const callFrom = ref('')
+const callTo = ref('')
+const dateFrom = ref('')
+const dateTo = ref('')
+const callId = ref('')
 onMounted(() => {
-  getNextData(1)
+  getNextData()
 
   // v-for="(page, index) in Math.ceil(calls.total / calls.per_page)"
 })
@@ -385,7 +487,7 @@ watch(
 )
 watch(deleteStatus, (newVal, oldval) => {
   if (newVal) {
-    getNextData(currentPage.value)
+    getNextData()
   }
 })
 function setPages() {
@@ -401,10 +503,63 @@ function setPages() {
 function handlePageNoClick(e, pageNo) {
   e.preventDefault()
   currentPage.value = pageNo
-  getNextData(pageNo)
+  getNextData()
 }
-function getNextData(pageIndex) {
-  callsStore.get_calls(pageIndex)
+function getNextData() {
+  let currentPageNo = 1,
+    perPageRow = 20,
+    callingFrom = '',
+    callingTo = '',
+    callFromDate = '',
+    callToDate = '',
+    callid = ''
+  let params = ''
+
+  if (callFrom.value) {
+    callingFrom = callFrom.value
+    params ? (params += '&from=' + callingFrom) : (params += 'from=' + callingFrom)
+  }
+  if (callTo.value) {
+    callingTo = callTo.value
+    params ? (params += '&to=' + callingTo) : (params += 'to=' + callingTo)
+  }
+  if (dateFrom.value) {
+    callFromDate = dateFrom.value
+    params ? (params += '&date_from=' + callFromDate) : (params += 'date_from=' + callFromDate)
+  }
+  if (dateTo.value) {
+    callToDate = dateTo.value
+    params ? (params += '&date_to=' + callToDate) : (params += 'date_to=' + callToDate)
+  }
+  if (callId.value) {
+    callid = callId.value
+    params ? (params += '&call_id=' + callid) : (params += 'call_id=' + callid)
+  }
+  if (!params) {
+    if (currentPage.value) {
+      currentPageNo = currentPage.value
+      params ? (params += '&page=' + currentPageNo) : (params += 'page=' + currentPageNo)
+    } else {
+      params ? (params += '&page=' + currentPageNo) : (params += 'page=' + currentPageNo)
+    }
+    if (perPage.value) {
+      perPageRow = perPage.value
+      params ? (params += '&limit=' + perPageRow) : (params += '&limit=' + perPageRow)
+    } else {
+      params ? (params += '&limit=' + perPageRow) : (params += 'limit=' + perPageRow)
+    }
+  }
+  //callsStore.get_calls(pageIndex)
+  callsStore.get_calls(params)
+}
+function clearFIlters(e) {
+  e.preventDefault()
+  callFrom.value = ''
+  callTo.value = ''
+  dateFrom.value = ''
+  dateTo.value = ''
+  callId.value = ''
+  getNextData()
 }
 function handleDeleteAction(e, callId) {
   e.preventDefault()
