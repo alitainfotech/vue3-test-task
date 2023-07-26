@@ -231,7 +231,9 @@
             ]"
             >{{ pages[0] }}</a
           >
-          <a v-if="currentPage > 3">....</a>
+          <a v-if="currentPage > 3" class="flex items-center justify-center text-2xl text-gray-400"
+            >....</a
+          >
           <a
             v-for="(pageNo, index) in displayedPages"
             :key="index"
@@ -248,7 +250,11 @@
             ]"
             >{{ pageNo }}</a
           >
-          <a v-if="currentPage < pages.length - 2">....</a>
+          <a
+            v-if="currentPage < pages.length - 2"
+            class="flex items-center justify-center text-2xl text-gray-400"
+            >....</a
+          >
           <a
             v-if="currentPage < pages.length - 2"
             @click="
@@ -325,7 +331,7 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref, computed, watch } from 'vue'
 import { useCallsStore } from '../../stores/CallsStore'
 const callsStore = useCallsStore()
-const { loading, calls } = storeToRefs(callsStore)
+const { loading, calls, deleteStatus } = storeToRefs(callsStore)
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid'
 
 const searchQuery = ref('')
@@ -377,6 +383,9 @@ watch(
   },
   { immediate: true }
 )
+watch(deleteStatus, (newVal, oldval) => {
+  getNextData(currentPage.value)
+})
 function setPages() {
   if (total.value) {
     let numberOfPages = Math.ceil(total.value / perPage.value)
